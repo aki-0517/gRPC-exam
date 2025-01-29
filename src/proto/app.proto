@@ -3,8 +3,10 @@ syntax = "proto3";
 package app;
 
 service AppService {
-  rpc GetData (GetDataRequest) returns (GetDataResponse);
-  rpc PostData (PostDataRequest) returns (PostDataResponse);
+  rpc GetData (GetDataRequest) returns (GetDataResponse) {}
+  rpc GetAllData (GetAllDataRequest) returns (GetAllDataResponse) {}
+  rpc PostData (PostDataRequest) returns (PostDataResponse) {}
+  rpc DeleteData (DeleteDataRequest) returns (DeleteDataResponse) {}
 }
 
 message GetDataRequest {
@@ -15,10 +17,30 @@ message GetDataResponse {
   string data = 1;
 }
 
+message GetAllDataRequest {}
+
+message GetAllDataResponse {
+  repeated StoredData data = 1;
+}
+
+message StoredData {
+  string id = 1;
+  string data = 2;
+}
+
 message PostDataRequest {
   string data = 1;
 }
 
 message PostDataResponse {
+  string message = 1;
+  string id = 2;
+}
+
+message DeleteDataRequest {
+  string id = 1;
+}
+
+message DeleteDataResponse {
   string message = 1;
 }

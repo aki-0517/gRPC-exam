@@ -9,8 +9,6 @@
     "build": "nest build",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
     "start": "nest start",
-    "prestart": "npm run proto:generate && nest build",
-    "prestart:dev": "npm run proto:generate && nest build",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
     "start:prod": "node dist/main",
@@ -20,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "proto:generate": "mkdir -p src/proto/generated && protoc --proto_path=./src/proto --connect-es_out=./src/proto/generated --connect-es_opt=target=ts --plugin=protoc-gen-connect-es=./node_modules/.bin/protoc-gen-connect-es ./src/proto/app.proto"
+    "proto:generate": "mkdir -p src/proto/generated && protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./src/proto/generated --ts_proto_opt=nestJs=true --ts_proto_opt=outputClientImpl=false --ts_proto_opt=addGrpcMetadata=true --proto_path=./src/proto ./src/proto/app.proto"
   },
   "dependencies": {
     "@connectrpc/connect": "^1.6.1",
@@ -32,7 +30,8 @@
     "@nestjs/microservices": "^11.0.6",
     "@nestjs/platform-express": "^11.0.1",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "ts-proto": "^1.181.2"
   },
   "devDependencies": {
     "@connectrpc/protoc-gen-connect-es": "^1.6.1",
