@@ -1,6 +1,8 @@
 import { Controller, Get, Post, Delete, Query, Body } from '@nestjs/common';
 import { AppServiceController, AppServiceControllerMethods, GetDataRequest, GetDataResponse, GetAllDataRequest, GetAllDataResponse, PostDataRequest, PostDataResponse, DeleteDataRequest, DeleteDataResponse } from './proto/generated/app';
 import { AppService } from './app.service';
+import { PostDataRequestDto } from './dto/post-data.dto';
+import { validate } from 'class-validator';
 
 @Controller('app')
 @AppServiceControllerMethods()
@@ -18,7 +20,11 @@ export class AppController implements AppServiceController {
   }
 
   @Post('postData')
-  postData(@Body() request: PostDataRequest): PostDataResponse {
+  async postData(@Body() request: PostDataRequestDto): Promise<PostDataResponse> {
+    const errors = await validate(request);
+    if (errors.length > 0) {
+      throw new Error('Validation failed!');
+    }
     return this.appService.postData(request.data);
   }
 
