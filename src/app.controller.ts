@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Delete, Query, Body } from '@nestjs/common';
+import { Controller, Get, Post, Delete, Query, Body, UsePipes, ValidationPipe } from '@nestjs/common';
 import { AppServiceController, AppServiceControllerMethods, GetDataRequest, GetDataResponse, GetAllDataRequest, GetAllDataResponse, PostDataRequest, PostDataResponse, DeleteDataRequest, DeleteDataResponse } from './proto/generated/app';
 import { AppService } from './app.service';
 import { PostDataRequestDto } from './dto/post-data.dto';
@@ -20,6 +20,7 @@ export class AppController implements AppServiceController {
   }
 
   @Post('postData')
+  @UsePipes(new ValidationPipe({ transform: true })) 
   async postData(@Body() request: PostDataRequestDto): Promise<PostDataResponse> {
     const errors = await validate(request);
     if (errors.length > 0) {
